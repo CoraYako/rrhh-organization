@@ -1,24 +1,28 @@
-package org.rrhh.department.application;
+package org.rrhh.department.application.implementation;
 
+import org.rrhh.department.application.usecase.DepartmentFindByIdUseCase;
 import org.rrhh.department.domain.document.Department;
+import org.rrhh.department.domain.exception.ResourceNotFoundException;
 import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class DepartmentFindByIdUseCase {
+public class DepartmentFindById implements DepartmentFindByIdUseCase {
 
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentFindByIdUseCase(DepartmentRepository departmentRepository) {
+    public DepartmentFindById(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 
+    @Override
     public Department getDepartmentById(String id) {
         if (id.trim().isEmpty())
             throw new RuntimeException("The department ID must not be null or empty.");
         Optional<Department> optionalDepartment = departmentRepository.findById(id);
-        return optionalDepartment.orElseThrow(() -> new RuntimeException("No such department for id " + id));
+        return optionalDepartment
+                .orElseThrow(() -> new ResourceNotFoundException("Department", "id", id));
     }
 }
