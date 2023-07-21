@@ -2,7 +2,7 @@ package org.rrhh.department.infrastructure.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.department.application.*;
+import org.rrhh.department.application.usecase.*;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentRequestDto;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentResponseDto;
@@ -36,7 +36,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DepartmentResponseDto> getDepartmentById(@RequestParam String id) {
+    public ResponseEntity<DepartmentResponseDto> getDepartmentById(@PathVariable String id) {
         DepartmentResponseDto departmentResponseDto = departmentMapper.toDto(departmentFindById.getDepartmentById(id));
         return ResponseEntity.status(HttpStatus.OK).body(departmentResponseDto);
     }
@@ -51,21 +51,21 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDepartmentById(@RequestParam String id) {
+    public ResponseEntity<Void> deleteDepartmentById(@PathVariable String id) {
         Department departmentFound = departmentFindById.getDepartmentById(id);
         departmentDelete.deleteDepartment(departmentFound);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<DepartmentResponseDto> getDepartmentByName(@RequestParam String name) {
+    @GetMapping("/name/{name}")
+    public ResponseEntity<DepartmentResponseDto> getDepartmentByName(@PathVariable String name) {
         DepartmentResponseDto departmentResponseDto = departmentMapper
                 .toDto(departmentFindByName.getDepartmentByName(name));
         return ResponseEntity.status(HttpStatus.OK).body(departmentResponseDto);
     }
 
-    @GetMapping("/{code}")
-    public ResponseEntity<DepartmentResponseDto> getDepartmentByCode(@RequestParam String code) {
+    @GetMapping("/code/{code}")
+    public ResponseEntity<DepartmentResponseDto> getDepartmentByCode(@PathVariable String code) {
         DepartmentResponseDto departmentResponseDto = departmentMapper
                 .toDto(departmentFindByCode.getDepartmentByCode(code));
         return ResponseEntity.status(HttpStatus.OK).body(departmentResponseDto);
