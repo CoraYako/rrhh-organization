@@ -45,18 +45,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public Optional<Department> findByName(String name) {
-        Optional<DepartmentDocument> optionalDepartmentDocument = departmentPersistence.findByName(name);
-        return optionalDepartmentDocument.map(departmentMapper::toDomain);
-    }
-
-    @Override
-    public Optional<Department> findByCode(String code) {
-        Optional<DepartmentDocument> optionalDepartmentDocument = departmentPersistence.findByCode(code);
-        return optionalDepartmentDocument.map(departmentMapper::toDomain);
-    }
-
-    @Override
     public boolean existsByName(String name) {
         return departmentPersistence.existsByName(name);
     }

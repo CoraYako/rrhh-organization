@@ -15,9 +15,5 @@ public interface DepartmentRepository {
 
     List<Department> findAll();
 
-    Optional<Department> findByName(String name);
-
-    Optional<Department> findByCode(String code);
-
     boolean existsByName(String name);
 }
