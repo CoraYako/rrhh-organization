@@ -1,10 +1,10 @@
-package org.rrhh.employee.domain;
+package org.rrhh.employee.domain.document;
 
-public class EmployeeID {
+public class EmployeeFirstName {
 
     private String value;
 
-    public EmployeeID(String value) {
+    public EmployeeFirstName(String value) {
         this.value = value;
     }
 

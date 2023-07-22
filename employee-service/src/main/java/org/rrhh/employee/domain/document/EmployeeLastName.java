@@ -1,4 +1,4 @@
-package org.rrhh.employee.domain;
+package org.rrhh.employee.domain.document;
 
 public class EmployeeLastName {
 
