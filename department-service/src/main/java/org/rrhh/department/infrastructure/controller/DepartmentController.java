@@ -22,8 +22,6 @@ public class DepartmentController {
     private final DepartmentFindByIdUseCase departmentFindById;
     private final DepartmentFindAllUseCase departmentFindAll;
     private final DepartmentDeleteUseCase departmentDelete;
-    private final DepartmentFindByNameUseCase departmentFindByName;
-    private final DepartmentFindByCodeUseCase departmentFindByCode;
 
     private final IGenericMapper<DepartmentResponseDto, Department, DepartmentRequestDto> departmentMapper;
 
@@ -55,19 +53,5 @@ public class DepartmentController {
         Department departmentFound = departmentFindById.getDepartmentById(id);
         departmentDelete.deleteDepartment(departmentFound);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @GetMapping("/name/{name}")
-    public ResponseEntity<DepartmentResponseDto> getDepartmentByName(@PathVariable String name) {
-        DepartmentResponseDto departmentResponseDto = departmentMapper
-                .toDto(departmentFindByName.getDepartmentByName(name));
-        return ResponseEntity.status(HttpStatus.OK).body(departmentResponseDto);
-    }
-
-    @GetMapping("/code/{code}")
-    public ResponseEntity<DepartmentResponseDto> getDepartmentByCode(@PathVariable String code) {
-        DepartmentResponseDto departmentResponseDto = departmentMapper
-                .toDto(departmentFindByCode.getDepartmentByCode(code));
-        return ResponseEntity.status(HttpStatus.OK).body(departmentResponseDto);
     }
 }
