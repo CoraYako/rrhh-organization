@@ -6,6 +6,8 @@ import org.rrhh.department.domain.exception.NullParameterException;
 import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class DepartmentDelete implements DepartmentDeleteUseCase {
 
@@ -17,7 +19,7 @@ public class DepartmentDelete implements DepartmentDeleteUseCase {
 
     @Override
     public void deleteDepartment(Department department) {
-        if (department == null)
+        if (Objects.isNull(department))
             throw new NullParameterException("Department");
 
         departmentRepository.delete(department);
