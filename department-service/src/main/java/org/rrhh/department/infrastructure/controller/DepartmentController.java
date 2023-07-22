@@ -22,12 +22,14 @@ public class DepartmentController {
     private final DepartmentFindByIdUseCase departmentFindById;
     private final DepartmentFindAllUseCase departmentFindAll;
     private final DepartmentDeleteUseCase departmentDelete;
+    private final DepartmentExistByNameUseCase departmentExistByName;
 
     private final IGenericMapper<DepartmentResponseDto, Department, DepartmentRequestDto> departmentMapper;
 
     @PostMapping("/create")
     public ResponseEntity<DepartmentResponseDto> createDepartment
             (@RequestBody @Valid DepartmentRequestDto departmentRequestDto) {
+        departmentExistByName.existsByName(departmentRequestDto.getName());
         Department department = departmentMapper.toDomain(departmentRequestDto);
         DepartmentResponseDto departmentResponseDto = departmentMapper.toDto(departmentSave.save(department));
         return ResponseEntity.status(HttpStatus.CREATED).body(departmentResponseDto);
