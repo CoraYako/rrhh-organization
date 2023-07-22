@@ -3,12 +3,13 @@ package org.rrhh.employee.domain.repository;
 import org.rrhh.employee.domain.document.Employee;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepository {
 
     Employee save(Employee employee);
 
-    Employee findById(String id);
+    Optional<Employee> findById(String id);
 
     List<Employee> findAll();
 
