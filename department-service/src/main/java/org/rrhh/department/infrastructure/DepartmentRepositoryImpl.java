@@ -5,7 +5,7 @@ import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.rrhh.department.infrastructure.repository.data.DepartmentPersistence;
 import org.rrhh.department.infrastructure.repository.document.DepartmentDocument;
-import org.rrhh.department.infrastructure.repository.mapper.IDepartmentMapper;
+import org.rrhh.department.infrastructure.repository.mapper.DepartmentMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     private final DepartmentPersistence departmentPersistence;
-    private final IDepartmentMapper departmentMapper;
+    private final DepartmentMapper departmentMapper;
 
     @Override
     public Department save(Department department) {
