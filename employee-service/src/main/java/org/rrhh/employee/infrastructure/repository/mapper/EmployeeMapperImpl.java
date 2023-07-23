@@ -3,8 +3,10 @@ package org.rrhh.employee.infrastructure.repository.mapper;
 import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.infrastructure.repository.document.EmployeeDocument;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @Component
+@Validated
 public class EmployeeMapperImpl implements EmployeeMapper {
 
     @Override
