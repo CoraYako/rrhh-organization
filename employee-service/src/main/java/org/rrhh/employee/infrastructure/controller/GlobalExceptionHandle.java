@@ -1,9 +1,6 @@
 package org.rrhh.employee.infrastructure.controller;
 
-import org.rrhh.employee.domain.exception.ErrorDetails;
-import org.rrhh.employee.domain.exception.NullParameterException;
-import org.rrhh.employee.domain.exception.ResourceExistException;
-import org.rrhh.employee.domain.exception.ResourceNotFoundException;
+import org.rrhh.employee.domain.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -85,5 +82,16 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler {
                 .errorCode("INVALID_DEPARTMENT")
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+    }
+
+    @ExceptionHandler(EmptyListException.class)
+    public ResponseEntity<Object> handleEmptyList(EmptyListException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .path(request.getDescription(false))
+                .errorCode(HttpStatus.NO_CONTENT.toString())
+                .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorDetails);
     }
 }
