@@ -1,15 +1,17 @@
 package org.rrhh.employee.infrastructure.controller.mapper;
 
 import org.rrhh.employee.domain.document.Employee;
-import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDto;
-import org.rrhh.employee.infrastructure.controller.dto.EmployeeResponseDto;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDTO;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeResponseDTO;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @Component
-public class EmployeeMapper implements GenericMapper<EmployeeResponseDto, Employee, EmployeeRequestDto> {
+@Validated
+public class EmployeeControllerMapper implements GenericMapper<EmployeeResponseDTO, Employee, EmployeeRequestDTO> {
 
     @Override
-    public Employee toDomain(EmployeeRequestDto dto) {
+    public Employee toDomain(EmployeeRequestDTO dto) {
         return Employee.builder()
                 .firstName(dto.firstName())
                 .lastName(dto.lastName())
@@ -18,8 +20,8 @@ public class EmployeeMapper implements GenericMapper<EmployeeResponseDto, Employ
     }
 
     @Override
-    public EmployeeResponseDto toDto(Employee document) {
-        return EmployeeResponseDto.builder()
+    public EmployeeResponseDTO toDTO(Employee document) {
+        return EmployeeResponseDTO.builder()
                 .id(document.getId().getValue())
                 .firstName(document.getFirstName().getValue())
                 .lastName(document.getLastName().getValue())

@@ -1,4 +1,4 @@
-package org.rrhh.employee.infrastructure.controller.mapper;
+package org.rrhh.department.infrastructure.controller.mapper;
 
 import jakarta.validation.constraints.NotNull;
 
