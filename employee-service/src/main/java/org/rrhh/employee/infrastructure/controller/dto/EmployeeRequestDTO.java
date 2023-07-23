@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 
 @Builder
-public record EmployeeRequestDto(
+public record EmployeeRequestDTO(
         @NotEmpty @NotBlank String firstName,
         @NotEmpty @NotBlank String lastName,
         @NotEmpty @NotBlank @Email String email
