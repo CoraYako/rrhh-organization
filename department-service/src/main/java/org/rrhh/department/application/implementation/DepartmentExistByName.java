@@ -16,10 +16,10 @@ public class DepartmentExistByName implements DepartmentExistByNameUseCase {
     }
 
     @Override
-    public void existsByName(String name) {
-        if (name.trim().isEmpty())
+    public void existsByName(String departmentName) {
+        if (departmentName.trim().isEmpty())
             throw new NullParameterException("Name");
-        if (departmentRepository.existsByName(name))
-            throw new ResourceExistException("Department", "name", name);
+        if (departmentRepository.existsByName(departmentName))
+            throw new ResourceExistException("Department", "name", departmentName);
     }
 }
