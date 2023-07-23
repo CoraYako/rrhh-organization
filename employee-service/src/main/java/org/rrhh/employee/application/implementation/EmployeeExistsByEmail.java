@@ -15,12 +15,11 @@ public class EmployeeExistsByEmail implements EmployeeExistsByEmailUseCase {
         this.employeeRepository = employeeRepository;
     }
 
-    // TODO: 22/7/2023 use custom exceptions
     @Override
-    public void existsByEmail(String email) {
-        if (email.trim().isEmpty())
+    public void existsByEmail(String employeeEmail) {
+        if (employeeEmail.trim().isEmpty())
             throw new NullParameterException("Email");
-       if (employeeRepository.existsByEmail(email))
-           throw new ResourceExistException("Employee", "email", email);
+       if (employeeRepository.existsByEmail(employeeEmail))
+           throw new ResourceExistException("Employee", "email", employeeEmail);
     }
 }
