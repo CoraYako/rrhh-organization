@@ -19,11 +19,11 @@ public class DepartmentFindById implements DepartmentFindByIdUseCase {
     }
 
     @Override
-    public Department getDepartmentById(String id) {
-        if (id.trim().isEmpty())
+    public Department getDepartmentById(String departmentId) {
+        if (departmentId.trim().isEmpty())
             throw new NullParameterException("Department ID");
-        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
         return optionalDepartment
-                .orElseThrow(() -> new ResourceNotFoundException("Department", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Department", "ID", departmentId));
     }
 }
