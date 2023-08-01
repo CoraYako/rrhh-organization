@@ -2,10 +2,14 @@ package org.rrhh.employee.infrastructure.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.employee.application.usecase.*;
+import org.rrhh.employee.application.usecase.EmployeeDeleteUseCase;
+import org.rrhh.employee.application.usecase.EmployeeFindAllUseCase;
+import org.rrhh.employee.application.usecase.EmployeeFindByIdUseCase;
+import org.rrhh.employee.application.usecase.EmployeeSaveUseCase;
+import org.rrhh.employee.domain.EmployeeConstants;
 import org.rrhh.employee.domain.document.Employee;
-import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDto;
-import org.rrhh.employee.infrastructure.controller.dto.EmployeeResponseDto;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDTO;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeResponseDTO;
 import org.rrhh.employee.infrastructure.controller.mapper.GenericMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,47 +18,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/employees")
+@RequestMapping(value = EmployeeConstants.BASE_URI)
 @RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeSaveUseCase employeeSave;
     private final EmployeeFindByIdUseCase employeeFindById;
     private final EmployeeFindAllUseCase employeeFindAll;
-    private final EmployeeExistsByEmailUseCase employeeExistsByEmail;
     private final EmployeeDeleteUseCase employeeDelete;
 
-    private final GenericMapper<EmployeeResponseDto, Employee, EmployeeRequestDto> employeeMapper;
+    private final GenericMapper<EmployeeResponseDTO, Employee, EmployeeRequestDTO> employeeMapper;
 
-    @PostMapping("/create")
-    public ResponseEntity<EmployeeResponseDto> createEmployee(
-            @RequestBody @Valid EmployeeRequestDto requestDto) {
-        employeeExistsByEmail.existsByEmail(requestDto.email());
-        Employee employeeDomain = employeeMapper.toDomain(requestDto);
+    @PostMapping(value = "/create")
+    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody @Valid EmployeeRequestDTO requestDTO) {
+        Employee employeeDomain = employeeMapper.toDomain(requestDTO);
         employeeDomain = employeeSave.createEmployee(employeeDomain);
-        EmployeeResponseDto responseDto = employeeMapper.toDto(employeeDomain);
+        EmployeeResponseDTO responseDTO = employeeMapper.toDTO(employeeDomain);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @GetMapping("/{employeeId}")
-    public ResponseEntity<EmployeeResponseDto> getEmployeeByID(@PathVariable String employeeId) {
+    @GetMapping(value = "/{employeeId}")
+    public ResponseEntity<EmployeeResponseDTO> getEmployeeByID(@PathVariable String employeeId) {
         Employee employeeDomain = employeeFindById.getEmployeeById(employeeId);
-        EmployeeResponseDto responseDto = employeeMapper.toDto(employeeDomain);
+        EmployeeResponseDTO responseDTO = employeeMapper.toDTO(employeeDomain);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeResponseDto>> getEmployees() {
-        List<EmployeeResponseDto> responseDtoList = employeeFindAll.getEmployees().stream()
-                .map(employeeMapper::toDto)
+    public ResponseEntity<List<EmployeeResponseDTO>> getEmployees() {
+        List<EmployeeResponseDTO> responseDtoList = employeeFindAll.getEmployees()
+                .stream()
+                .map(employeeMapper::toDTO)
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
     }
 
-    @DeleteMapping("{/employeeId}")
+    @DeleteMapping(value = "/{employeeId}")
     public ResponseEntity<Void> deleteEmployeeById(@PathVariable String employeeId) {
         Employee employeeDomain = employeeFindById.getEmployeeById(employeeId);
         employeeDelete.deleteEmployee(employeeDomain);

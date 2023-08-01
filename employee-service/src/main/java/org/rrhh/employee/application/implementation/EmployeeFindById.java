@@ -19,12 +19,12 @@ public class EmployeeFindById implements EmployeeFindByIdUseCase {
     }
 
     @Override
-    public Employee getEmployeeById(String id) {
-        if (id.trim().isEmpty())
+    public Employee getEmployeeById(String employeeId) {
+        if (employeeId.trim().isEmpty())
             throw new NullParameterException("Employee");
 
-        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
         return optionalEmployee
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", employeeId));
     }
 }

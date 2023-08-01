@@ -1,9 +1,6 @@
 package org.rrhh.department.infrastructure.controller;
 
-import org.rrhh.department.domain.exception.ErrorDetails;
-import org.rrhh.department.domain.exception.NullParameterException;
-import org.rrhh.department.domain.exception.ResourceExistException;
-import org.rrhh.department.domain.exception.ResourceNotFoundException;
+import org.rrhh.department.domain.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,8 +9,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -22,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -85,5 +82,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .errorCode("INVALID_DEPARTMENT")
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+    }
+
+    @ExceptionHandler(EmptyListException.class)
+    public ResponseEntity<Object> handleEmptyList(EmptyListException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .path(request.getDescription(false))
+                .errorCode(HttpStatus.NO_CONTENT.toString())
+                .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorDetails);
     }
 }

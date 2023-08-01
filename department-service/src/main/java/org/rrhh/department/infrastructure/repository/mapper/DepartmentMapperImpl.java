@@ -3,8 +3,10 @@ package org.rrhh.department.infrastructure.repository.mapper;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.infrastructure.repository.document.DepartmentDocument;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 @Component
+@Validated
 public class DepartmentMapperImpl implements DepartmentMapper {
 
     @Override

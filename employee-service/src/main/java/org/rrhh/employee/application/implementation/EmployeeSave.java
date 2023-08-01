@@ -1,5 +1,6 @@
 package org.rrhh.employee.application.implementation;
 
+import org.rrhh.employee.application.usecase.EmployeeExistsByEmailUseCase;
 import org.rrhh.employee.application.usecase.EmployeeSaveUseCase;
 import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.domain.exception.NullParameterException;
@@ -12,15 +13,21 @@ import java.util.Objects;
 public class EmployeeSave implements EmployeeSaveUseCase {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeExistsByEmailUseCase employeeExistsByEmail;
 
-    public EmployeeSave(EmployeeRepository employeeRepository) {
+    public EmployeeSave(EmployeeRepository employeeRepository, EmployeeExistsByEmailUseCase employeeExistsByEmail) {
         this.employeeRepository = employeeRepository;
+        this.employeeExistsByEmail = employeeExistsByEmail;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
         if (Objects.isNull(employee))
             throw new NullParameterException("Employee");
+
+        String employeeEmail = employee.getEmail().getValue();
+        employeeExistsByEmail.existsByEmail(employeeEmail);
+
         return employeeRepository.save(employee);
     }
 }
