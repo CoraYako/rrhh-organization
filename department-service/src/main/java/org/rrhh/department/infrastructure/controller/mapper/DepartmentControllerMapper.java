@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Component
 @Validated
-public class DocumentControllerMapper implements GenericMapper<DepartmentResponseDTO, Department, DepartmentRequestDTO> {
+public class DepartmentControllerMapper implements GenericMapper<DepartmentResponseDTO, Department, DepartmentRequestDTO> {
 
     @Override
     public Department toDomain(DepartmentRequestDTO dto) {
