@@ -56,7 +56,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
     }
 
-    @DeleteMapping(value = "{/employeeId}")
+    @DeleteMapping(value = "/{employeeId}")
     public ResponseEntity<Void> deleteEmployeeById(@PathVariable String employeeId) {
         Employee employeeDomain = employeeFindById.getEmployeeById(employeeId);
         employeeDelete.deleteEmployee(employeeDomain);
