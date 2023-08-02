@@ -2,10 +2,7 @@ package org.rrhh.department.infrastructure.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.department.application.usecase.DepartmentDeleteUseCase;
-import org.rrhh.department.application.usecase.DepartmentFindAllUseCase;
-import org.rrhh.department.application.usecase.DepartmentFindByIdUseCase;
-import org.rrhh.department.application.usecase.DepartmentSaveUseCase;
+import org.rrhh.department.application.usecase.*;
 import org.rrhh.department.domain.DepartmentConstants;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentRequestDTO;
@@ -24,6 +21,7 @@ public class DepartmentController {
 
     private final DepartmentSaveUseCase departmentSave;
     private final DepartmentFindByIdUseCase departmentFindById;
+    private final DepartmentFindByCodeUseCase departmentFindByCode;
     private final DepartmentFindAllUseCase departmentFindAll;
     private final DepartmentDeleteUseCase departmentDelete;
 
@@ -41,6 +39,14 @@ public class DepartmentController {
     @GetMapping(value = "/{departmentId}")
     public ResponseEntity<DepartmentResponseDTO> getDepartmentById(@PathVariable String departmentId) {
         Department departmentDomain = departmentFindById.getDepartmentById(departmentId);
+        DepartmentResponseDTO responseDTO = departmentMapper.toDTO(departmentDomain);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+    @GetMapping(value = "/code/{departmentCode}")
+    public ResponseEntity<DepartmentResponseDTO> getDepartmentByCode(@PathVariable String departmentCode) {
+        Department departmentDomain = departmentFindByCode.getDepartmentByCode(departmentCode);
         DepartmentResponseDTO responseDTO = departmentMapper.toDTO(departmentDomain);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
