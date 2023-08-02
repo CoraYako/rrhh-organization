@@ -16,4 +16,6 @@ public interface DepartmentRepository {
     List<Department> findAll();
 
     boolean existsByName(String name);
+
+    Optional<Department> findByCode(String code);
 }
