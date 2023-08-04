@@ -34,8 +34,16 @@ public class EmployeeFindById implements EmployeeFindByIdUseCase {
 
         String departmentCode = optionalEmployee.get().getDepartmentCode().getValue();
         Department department = departmentFindByCode.getDepartmentByCode(departmentCode);
-        optionalEmployee.get().getDepartment().setValue(department);
+        Employee employeeFound = optionalEmployee.get();
+        employeeFound = Employee.builder()
+                .id(employeeFound.getId().getValue())
+                .firstName(employeeFound.getFirstName().getValue())
+                .lastName(employeeFound.getLastName().getValue())
+                .email(employeeFound.getEmail().getValue())
+                .departmentCode(employeeFound.getDepartmentCode().getValue())
+                .department(department)
+                .build();
 
-        return optionalEmployee.get();
+        return employeeFound;
     }
 }
