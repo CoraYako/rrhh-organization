@@ -1,17 +1,28 @@
 package org.rrhh.employee.domain.document;
 
+import org.rrhh.department.domain.document.Department;
+
 public class Employee {
 
     private final EmployeeID id;
     private final EmployeeFirstName firstName;
     private final EmployeeLastName lastName;
     private final EmployeeEmail email;
+    private final EmployeeDepartmentCode departmentCode;
+    private final EmployeeDepartment department;
 
-    public Employee(EmployeeID id, EmployeeFirstName firstName, EmployeeLastName lastName, EmployeeEmail email) {
+    public Employee(EmployeeID id,
+                    EmployeeFirstName firstName,
+                    EmployeeLastName lastName,
+                    EmployeeEmail email,
+                    EmployeeDepartmentCode departmentCode,
+                    EmployeeDepartment department) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.departmentCode = departmentCode;
+        this.department = department;
     }
 
     public static EmployeeBuilder builder() {
@@ -34,12 +45,22 @@ public class Employee {
         return email;
     }
 
+    public EmployeeDepartmentCode getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public EmployeeDepartment getDepartment() {
+        return department;
+    }
+
     public static class EmployeeBuilder {
 
         private EmployeeID id;
         private EmployeeFirstName firstName;
         private EmployeeLastName lastName;
         private EmployeeEmail email;
+        private EmployeeDepartmentCode departmentCode;
+        private EmployeeDepartment department;
 
         public EmployeeBuilder id(String id) {
             this.id = new EmployeeID(id);
@@ -61,8 +82,18 @@ public class Employee {
             return this;
         }
 
+        public EmployeeBuilder departmentCode(String departmentCode) {
+            this.departmentCode = new EmployeeDepartmentCode(departmentCode);
+            return this;
+        }
+
+        public EmployeeBuilder department(Department department) {
+            this.department = new EmployeeDepartment(department);
+            return this;
+        }
+
         public Employee build() {
-            return new Employee(id, firstName, lastName, email);
+            return new Employee(id, firstName, lastName, email, departmentCode, department);
         }
     }
 }

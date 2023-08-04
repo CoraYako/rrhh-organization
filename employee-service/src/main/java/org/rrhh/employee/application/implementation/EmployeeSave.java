@@ -1,5 +1,7 @@
 package org.rrhh.employee.application.implementation;
 
+import org.rrhh.department.application.usecase.DepartmentFindByCodeUseCase;
+import org.rrhh.department.domain.document.Department;
 import org.rrhh.employee.application.usecase.EmployeeExistsByEmailUseCase;
 import org.rrhh.employee.application.usecase.EmployeeSaveUseCase;
 import org.rrhh.employee.domain.document.Employee;
@@ -15,9 +17,14 @@ public class EmployeeSave implements EmployeeSaveUseCase {
     private final EmployeeRepository employeeRepository;
     private final EmployeeExistsByEmailUseCase employeeExistsByEmail;
 
-    public EmployeeSave(EmployeeRepository employeeRepository, EmployeeExistsByEmailUseCase employeeExistsByEmail) {
+    private final DepartmentFindByCodeUseCase departmentFindByCodeUseCase;
+
+    public EmployeeSave(EmployeeRepository employeeRepository,
+                        EmployeeExistsByEmailUseCase employeeExistsByEmail,
+                        DepartmentFindByCodeUseCase departmentFindByCodeUseCase) {
         this.employeeRepository = employeeRepository;
         this.employeeExistsByEmail = employeeExistsByEmail;
+        this.departmentFindByCodeUseCase = departmentFindByCodeUseCase;
     }
 
     @Override
@@ -28,6 +35,19 @@ public class EmployeeSave implements EmployeeSaveUseCase {
         String employeeEmail = employee.getEmail().getValue();
         employeeExistsByEmail.existsByEmail(employeeEmail);
 
-        return employeeRepository.save(employee);
+        String departmentCode = employee.getDepartmentCode().getValue();
+        Department department = departmentFindByCodeUseCase.getDepartmentByCode(departmentCode);
+
+        Employee employeeSaved = employeeRepository.save(employee);
+        employee = Employee.builder()
+                .id(employeeSaved.getId().getValue())
+                .firstName(employeeSaved.getFirstName().getValue())
+                .lastName(employeeSaved.getLastName().getValue())
+                .email(employeeSaved.getEmail().getValue())
+                .departmentCode(employeeSaved.getDepartmentCode().getValue())
+                .department(department)
+                .build();
+
+        return employee;
     }
 }

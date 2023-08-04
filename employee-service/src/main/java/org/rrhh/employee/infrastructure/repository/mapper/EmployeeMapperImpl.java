@@ -16,6 +16,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
                 .firstName(employeeDocument.getFirstName())
                 .lastName(employeeDocument.getLastName())
                 .email(employeeDocument.getEmail())
+                .departmentCode(employeeDocument.getDepartmentCode())
                 .build();
     }
 
@@ -25,6 +26,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
                 .firstName(employee.getFirstName().getValue())
                 .lastName(employee.getLastName().getValue())
                 .email(employee.getEmail().getValue())
+                .departmentCode(employee.getDepartmentCode().getValue())
                 .build();
     }
 
@@ -35,6 +37,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
                 .firstName(employee.getFirstName().getValue())
                 .lastName(employee.getLastName().getValue())
                 .email(employee.getEmail().getValue())
+                .departmentCode(employee.getDepartmentCode().getValue())
                 .build();
     }
 }

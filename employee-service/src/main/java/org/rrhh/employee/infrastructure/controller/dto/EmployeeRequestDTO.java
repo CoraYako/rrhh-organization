@@ -9,6 +9,7 @@ import lombok.Builder;
 public record EmployeeRequestDTO(
         @NotEmpty @NotBlank String firstName,
         @NotEmpty @NotBlank String lastName,
-        @NotEmpty @NotBlank @Email String email
+        @NotEmpty @NotBlank @Email String email,
+        @NotEmpty @NotBlank String departmentCode
 ) {
 }
