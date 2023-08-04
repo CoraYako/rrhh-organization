@@ -7,11 +7,11 @@ import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DepartmentExistByName implements DepartmentExistByNameUseCase {
+public class DepartmentExistsByName implements DepartmentExistByNameUseCase {
 
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentExistByName(DepartmentRepository departmentRepository) {
+    public DepartmentExistsByName(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 
