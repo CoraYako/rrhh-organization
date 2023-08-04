@@ -1,13 +1,13 @@
 package org.rrhh.department.application.implementation;
 
-import org.rrhh.department.application.usecase.DepartmentExistByNameUseCase;
+import org.rrhh.department.application.usecase.DepartmentExistsByNameUseCase;
 import org.rrhh.department.domain.exception.NullParameterException;
 import org.rrhh.department.domain.exception.ResourceExistException;
 import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DepartmentExistsByName implements DepartmentExistByNameUseCase {
+public class DepartmentExistsByName implements DepartmentExistsByNameUseCase {
 
     private final DepartmentRepository departmentRepository;
 
