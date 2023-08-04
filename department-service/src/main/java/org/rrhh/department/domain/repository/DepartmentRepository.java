@@ -18,4 +18,6 @@ public interface DepartmentRepository {
     boolean existsByName(String name);
 
     Optional<Department> findByCode(String code);
+
+    boolean existsByCode(String code);
 }

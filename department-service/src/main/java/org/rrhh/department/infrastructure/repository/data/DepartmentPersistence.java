@@ -12,4 +12,6 @@ public interface DepartmentPersistence extends MongoRepository<DepartmentDocumen
     boolean existsByName(String name);
 
     Optional<DepartmentDocument> findByCode(String code);
+
+    boolean existsByCode(String code);
 }

@@ -54,4 +54,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
         Optional<DepartmentDocument> optionalDepartmentDocument = departmentPersistence.findByCode(code);
         return optionalDepartmentDocument.map(departmentMapper::toDomain);
     }
+
+    @Override
+    public boolean existsByCode(String code) {
+        return departmentPersistence.existsByCode(code);
+    }
 }

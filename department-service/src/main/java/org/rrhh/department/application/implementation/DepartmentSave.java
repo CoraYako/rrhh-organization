@@ -1,6 +1,7 @@
 package org.rrhh.department.application.implementation;
 
-import org.rrhh.department.application.usecase.DepartmentExistByNameUseCase;
+import org.rrhh.department.application.usecase.DepartmentExistsByCodeUseCase;
+import org.rrhh.department.application.usecase.DepartmentExistsByNameUseCase;
 import org.rrhh.department.application.usecase.DepartmentSaveUseCase;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.domain.exception.NullParameterException;
@@ -13,11 +14,15 @@ import java.util.Objects;
 public class DepartmentSave implements DepartmentSaveUseCase {
 
     private final DepartmentRepository departmentRepository;
-    private final DepartmentExistByNameUseCase departmentExistByName;
+    private final DepartmentExistsByNameUseCase departmentExistsByName;
+    private final DepartmentExistsByCodeUseCase departmentExistsByCode;
 
-    public DepartmentSave(DepartmentRepository departmentRepository, DepartmentExistByNameUseCase departmentExistByName) {
+    public DepartmentSave(DepartmentRepository departmentRepository,
+                          DepartmentExistsByNameUseCase departmentExistByName,
+                          DepartmentExistsByCodeUseCase departmentExistsByCode) {
         this.departmentRepository = departmentRepository;
-        this.departmentExistByName = departmentExistByName;
+        this.departmentExistsByName = departmentExistByName;
+        this.departmentExistsByCode = departmentExistsByCode;
     }
 
     @Override
@@ -26,7 +31,9 @@ public class DepartmentSave implements DepartmentSaveUseCase {
             throw new NullParameterException("Department");
 
         String departmentName = department.getName().getValue();
-        departmentExistByName.existsByName(departmentName);
+        String departmentCode = department.getCode().getValue();
+        departmentExistsByName.existsByName(departmentName);
+        departmentExistsByCode.existsByCode(departmentCode);
 
         return departmentRepository.save(department);
     }
