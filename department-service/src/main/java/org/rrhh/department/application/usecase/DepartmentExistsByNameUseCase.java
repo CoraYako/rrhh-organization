@@ -1,6 +1,6 @@
 package org.rrhh.department.application.usecase;
 
-public interface DepartmentExistByNameUseCase {
+public interface DepartmentExistsByNameUseCase {
 
     void existsByName(String name);
 }
