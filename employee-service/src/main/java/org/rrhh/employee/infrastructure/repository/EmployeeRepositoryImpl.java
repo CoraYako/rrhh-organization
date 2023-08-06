@@ -1,4 +1,4 @@
-package org.rrhh.employee.infrastructure;
+package org.rrhh.employee.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.rrhh.employee.domain.document.Employee;
