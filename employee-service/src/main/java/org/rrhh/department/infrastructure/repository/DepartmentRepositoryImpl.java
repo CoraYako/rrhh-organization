@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class DepartmentRepositoryImpl implements DepartmentRepository {
 
-    private final DepartmentFeign departmentFeignClient;
+    private final APIClient APIClient;
     private final DepartmentMapper departmentMapper;
 
     @Override
     public Department findByCode(String code) {
-        DepartmentResponseDTO departmentResponseDTO = departmentFeignClient.getDepartmentByCode(code);
+        DepartmentResponseDTO departmentResponseDTO = APIClient.getDepartmentByCode(code);
         return departmentMapper.toDomain(departmentResponseDTO);
     }
 }
