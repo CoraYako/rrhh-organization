@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(url = DepartmentConstants.BASE_URL, name = DepartmentConstants.MICROSERVICE_NAME)
+@FeignClient(name = DepartmentConstants.MICROSERVICE_EUREKA_CLIENT_ID)
 public interface APIClient {
 
     @GetMapping(value = DepartmentConstants.GET_BY_CODE_URI)
