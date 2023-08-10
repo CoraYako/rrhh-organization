@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/department")
+@RequestMapping("/departments")
 public class DepartmentMessageController {
 
-    @Value("{spring.boot.message")
+    @Value("${spring.boot.message}")
     private String message;
 
     @GetMapping("/message")
