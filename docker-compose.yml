@@ -36,6 +36,12 @@ services:
     ports:
       - 5672:5672
 
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
 networks:
   mongo-network:
     driver: bridge
