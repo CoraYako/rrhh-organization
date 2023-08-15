@@ -8,8 +8,9 @@ import org.rrhh.employee.application.usecase.EmployeeFindByIdUseCase;
 import org.rrhh.employee.application.usecase.EmployeeSaveUseCase;
 import org.rrhh.employee.domain.EmployeeConstants;
 import org.rrhh.employee.domain.document.Employee;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeBasicResponseDTO;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeCompleteResponseDTO;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDTO;
-import org.rrhh.employee.infrastructure.controller.dto.EmployeeResponseDTO;
 import org.rrhh.employee.infrastructure.controller.mapper.GenericMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,28 +28,28 @@ public class EmployeeController {
     private final EmployeeFindAllUseCase employeeFindAll;
     private final EmployeeDeleteUseCase employeeDelete;
 
-    private final GenericMapper<EmployeeResponseDTO, Employee, EmployeeRequestDTO> employeeMapper;
+    private final GenericMapper<EmployeeCompleteResponseDTO, EmployeeBasicResponseDTO, Employee, EmployeeRequestDTO> employeeMapper;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody @Valid EmployeeRequestDTO requestDTO) {
+    public ResponseEntity<EmployeeCompleteResponseDTO> createEmployee(@RequestBody @Valid EmployeeRequestDTO requestDTO) {
         Employee employeeDomain = employeeMapper.toDomain(requestDTO);
         employeeDomain = employeeSave.createEmployee(employeeDomain);
-        EmployeeResponseDTO responseDTO = employeeMapper.toDTO(employeeDomain);
+        EmployeeCompleteResponseDTO responseDTO = employeeMapper.toCompleteDTO(employeeDomain);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @GetMapping(value = "/{employeeId}")
-    public ResponseEntity<EmployeeResponseDTO> getEmployeeByID(@PathVariable String employeeId) {
+    public ResponseEntity<EmployeeCompleteResponseDTO> getEmployeeByID(@PathVariable String employeeId) {
         Employee employeeDomain = employeeFindById.getEmployeeById(employeeId);
-        EmployeeResponseDTO responseDTO = employeeMapper.toDTO(employeeDomain);
+        EmployeeCompleteResponseDTO responseDTO = employeeMapper.toCompleteDTO(employeeDomain);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeResponseDTO>> getEmployees() {
-        List<EmployeeResponseDTO> responseDtoList = employeeFindAll.getEmployees()
+    public ResponseEntity<List<EmployeeBasicResponseDTO>> getEmployees() {
+        List<EmployeeBasicResponseDTO> responseDtoList = employeeFindAll.getEmployees()
                 .stream()
                 .map(employeeMapper::toDTO)
                 .toList();

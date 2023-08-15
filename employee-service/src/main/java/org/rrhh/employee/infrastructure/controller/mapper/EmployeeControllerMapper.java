@@ -3,15 +3,17 @@ package org.rrhh.employee.infrastructure.controller.mapper;
 import lombok.RequiredArgsConstructor;
 import org.rrhh.department.infrastructure.mapper.DepartmentMapper;
 import org.rrhh.employee.domain.document.Employee;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeBasicResponseDTO;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeCompleteResponseDTO;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDTO;
-import org.rrhh.employee.infrastructure.controller.dto.EmployeeResponseDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
 @Validated
 @RequiredArgsConstructor
-public class EmployeeControllerMapper implements GenericMapper<EmployeeResponseDTO, Employee, EmployeeRequestDTO> {
+public class EmployeeControllerMapper implements
+        GenericMapper<EmployeeCompleteResponseDTO, EmployeeBasicResponseDTO, Employee, EmployeeRequestDTO> {
 
     private final DepartmentMapper departmentMapper;
 
@@ -26,14 +28,25 @@ public class EmployeeControllerMapper implements GenericMapper<EmployeeResponseD
     }
 
     @Override
-    public EmployeeResponseDTO toDTO(Employee document) {
-        return EmployeeResponseDTO.builder()
+    public EmployeeCompleteResponseDTO toCompleteDTO(Employee document) {
+        return EmployeeCompleteResponseDTO.builder()
                 .id(document.getId().getValue())
                 .firstName(document.getFirstName().getValue())
                 .lastName(document.getLastName().getValue())
                 .email(document.getEmail().getValue())
                 .departmentCode(document.getDepartmentCode().getValue())
                 .associatedDepartment(departmentMapper.toDTO(document.getDepartment().getValue()))
+                .build();
+    }
+
+    @Override
+    public EmployeeBasicResponseDTO toDTO(Employee document) {
+        return EmployeeBasicResponseDTO.builder()
+                .id(document.getId().getValue())
+                .firstName(document.getFirstName().getValue())
+                .lastName(document.getLastName().getValue())
+                .email(document.getEmail().getValue())
+                .departmentCode(document.getDepartmentCode().getValue())
                 .build();
     }
 }
