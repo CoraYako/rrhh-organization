@@ -1,4 +1,4 @@
-package org.rrhh.organizationservice;
+package org.rrhh.organization;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
