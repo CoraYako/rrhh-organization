@@ -2,10 +2,10 @@ package org.rrhh.employee.infrastructure.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.rrhh.employee.application.usecase.EmployeeCreateUseCase;
 import org.rrhh.employee.application.usecase.EmployeeDeleteUseCase;
-import org.rrhh.employee.application.usecase.EmployeeFindAllUseCase;
-import org.rrhh.employee.application.usecase.EmployeeFindByIdUseCase;
-import org.rrhh.employee.application.usecase.EmployeeSaveUseCase;
+import org.rrhh.employee.application.usecase.EmployeeGetAllUseCase;
+import org.rrhh.employee.application.usecase.EmployeeGetByIdUseCase;
 import org.rrhh.employee.domain.EmployeeConstants;
 import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeBasicResponseDTO;
@@ -23,9 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeSaveUseCase employeeSave;
-    private final EmployeeFindByIdUseCase employeeFindById;
-    private final EmployeeFindAllUseCase employeeFindAll;
+    private final EmployeeCreateUseCase employeeCreate;
+    private final EmployeeGetByIdUseCase employeeGetById;
+    private final EmployeeGetAllUseCase employeeGetAll;
     private final EmployeeDeleteUseCase employeeDelete;
 
     private final GenericMapper<EmployeeCompleteResponseDTO, EmployeeBasicResponseDTO, Employee, EmployeeRequestDTO> employeeMapper;
@@ -33,7 +33,7 @@ public class EmployeeController {
     @PostMapping(value = "/create")
     public ResponseEntity<EmployeeCompleteResponseDTO> createEmployee(@RequestBody @Valid EmployeeRequestDTO requestDTO) {
         Employee employeeDomain = employeeMapper.toDomain(requestDTO);
-        employeeDomain = employeeSave.createEmployee(employeeDomain);
+        employeeDomain = employeeCreate.createEmployee(employeeDomain);
         EmployeeCompleteResponseDTO responseDTO = employeeMapper.toCompleteDTO(employeeDomain);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -41,15 +41,15 @@ public class EmployeeController {
 
     @GetMapping(value = "/{employeeId}")
     public ResponseEntity<EmployeeCompleteResponseDTO> getEmployeeByID(@PathVariable String employeeId) {
-        Employee employeeDomain = employeeFindById.getEmployeeById(employeeId);
+        Employee employeeDomain = employeeGetById.getEmployeeById(employeeId);
         EmployeeCompleteResponseDTO responseDTO = employeeMapper.toCompleteDTO(employeeDomain);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeBasicResponseDTO>> getEmployees() {
-        List<EmployeeBasicResponseDTO> responseDtoList = employeeFindAll.getEmployees()
+    public ResponseEntity<List<EmployeeBasicResponseDTO>> listEmployees() {
+        List<EmployeeBasicResponseDTO> responseDtoList = employeeGetAll.getEmployees()
                 .stream()
                 .map(employeeMapper::toDTO)
                 .toList();
@@ -59,7 +59,7 @@ public class EmployeeController {
 
     @DeleteMapping(value = "/{employeeId}")
     public ResponseEntity<Void> deleteEmployeeById(@PathVariable String employeeId) {
-        Employee employeeDomain = employeeFindById.getEmployeeById(employeeId);
+        Employee employeeDomain = employeeGetById.getEmployeeById(employeeId);
         employeeDelete.deleteEmployee(employeeDomain);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

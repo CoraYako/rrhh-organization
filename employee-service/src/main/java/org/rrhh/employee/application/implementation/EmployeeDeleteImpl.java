@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class EmployeeDelete implements EmployeeDeleteUseCase {
+public class EmployeeDeleteImpl implements EmployeeDeleteUseCase {
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeDelete(EmployeeRepository employeeRepository) {
+    public EmployeeDeleteImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 

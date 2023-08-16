@@ -1,9 +1,9 @@
 package org.rrhh.employee.application.implementation;
 
-import org.rrhh.department.application.usecase.DepartmentFindByCodeUseCase;
+import org.rrhh.department.application.usecase.DepartmentGetByCodeUseCase;
 import org.rrhh.department.domain.document.Department;
+import org.rrhh.employee.application.usecase.EmployeeCreateUseCase;
 import org.rrhh.employee.application.usecase.EmployeeExistsByEmailUseCase;
-import org.rrhh.employee.application.usecase.EmployeeSaveUseCase;
 import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.domain.exception.NullParameterException;
 import org.rrhh.employee.domain.repository.EmployeeRepository;
@@ -12,19 +12,19 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class EmployeeSave implements EmployeeSaveUseCase {
+public class EmployeeCreateImpl implements EmployeeCreateUseCase {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeExistsByEmailUseCase employeeExistsByEmail;
 
-    private final DepartmentFindByCodeUseCase departmentFindByCodeUseCase;
+    private final DepartmentGetByCodeUseCase departmentFindByCode;
 
-    public EmployeeSave(EmployeeRepository employeeRepository,
-                        EmployeeExistsByEmailUseCase employeeExistsByEmail,
-                        DepartmentFindByCodeUseCase departmentFindByCodeUseCase) {
+    public EmployeeCreateImpl(EmployeeRepository employeeRepository,
+                              EmployeeExistsByEmailUseCase employeeExistsByEmail,
+                              DepartmentGetByCodeUseCase departmentFindByCode) {
         this.employeeRepository = employeeRepository;
         this.employeeExistsByEmail = employeeExistsByEmail;
-        this.departmentFindByCodeUseCase = departmentFindByCodeUseCase;
+        this.departmentFindByCode = departmentFindByCode;
     }
 
     @Override
@@ -33,10 +33,10 @@ public class EmployeeSave implements EmployeeSaveUseCase {
             throw new NullParameterException("Employee");
 
         String employeeEmail = employee.getEmail().getValue();
-        employeeExistsByEmail.existsByEmail(employeeEmail);
+        employeeExistsByEmail.existsEmployeeByEmail(employeeEmail);
 
         String departmentCode = employee.getDepartmentCode().getValue();
-        Department department = departmentFindByCodeUseCase.getDepartmentByCode(departmentCode);
+        Department department = departmentFindByCode.getDepartmentByCode(departmentCode);
 
         Employee employeeSaved = employeeRepository.save(employee);
         employee = Employee.builder()

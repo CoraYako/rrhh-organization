@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 @Component
 @Validated
 @RequiredArgsConstructor
-public class EmployeeControllerMapper implements
+public class EmployeeControllerMapperImpl implements
         GenericMapper<EmployeeCompleteResponseDTO, EmployeeBasicResponseDTO, Employee, EmployeeRequestDTO> {
 
     private final DepartmentMapper departmentMapper;

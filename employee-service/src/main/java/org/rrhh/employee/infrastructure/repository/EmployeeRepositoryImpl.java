@@ -6,12 +6,12 @@ import org.rrhh.employee.domain.repository.EmployeeRepository;
 import org.rrhh.employee.infrastructure.repository.data.EmployeePersistence;
 import org.rrhh.employee.infrastructure.repository.document.EmployeeDocument;
 import org.rrhh.employee.infrastructure.repository.mapper.EmployeeMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class EmployeeRepositoryImpl implements EmployeeRepository {
 

@@ -1,8 +1,8 @@
 package org.rrhh.employee.application.implementation;
 
-import org.rrhh.department.application.usecase.DepartmentFindByCodeUseCase;
+import org.rrhh.department.application.usecase.DepartmentGetByCodeUseCase;
 import org.rrhh.department.domain.document.Department;
-import org.rrhh.employee.application.usecase.EmployeeFindByIdUseCase;
+import org.rrhh.employee.application.usecase.EmployeeGetByIdUseCase;
 import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.domain.exception.NullParameterException;
 import org.rrhh.employee.domain.exception.ResourceNotFoundException;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class EmployeeFindById implements EmployeeFindByIdUseCase {
+public class EmployeeGetByIdImpl implements EmployeeGetByIdUseCase {
 
     private final EmployeeRepository employeeRepository;
 
-    private final DepartmentFindByCodeUseCase departmentFindByCode;
+    private final DepartmentGetByCodeUseCase departmentFindByCode;
 
-    public EmployeeFindById(EmployeeRepository employeeRepository, DepartmentFindByCodeUseCase departmentFindByCode) {
+    public EmployeeGetByIdImpl(EmployeeRepository employeeRepository, DepartmentGetByCodeUseCase departmentFindByCode) {
         this.employeeRepository = employeeRepository;
         this.departmentFindByCode = departmentFindByCode;
     }

@@ -1,7 +1,7 @@
 package org.rrhh.department.application.implementation;
 
 import io.github.resilience4j.retry.annotation.Retry;
-import org.rrhh.department.application.usecase.DepartmentFindByCodeUseCase;
+import org.rrhh.department.application.usecase.DepartmentGetByCodeUseCase;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.slf4j.Logger;
@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DepartmentFindByCode implements DepartmentFindByCodeUseCase {
+public class DepartmentGetByCodeImpl implements DepartmentGetByCodeUseCase {
 
     private final DepartmentRepository departmentRepository;
-    private final Logger logger = LoggerFactory.getLogger(DepartmentFindByCode.class);
+    private final Logger logger = LoggerFactory.getLogger(DepartmentGetByCodeImpl.class);
 
-    public DepartmentFindByCode(DepartmentRepository departmentRepository) {
+    public DepartmentGetByCodeImpl(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 
