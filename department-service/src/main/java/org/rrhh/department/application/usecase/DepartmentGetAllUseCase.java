@@ -2,7 +2,9 @@ package org.rrhh.department.application.usecase;
 
 import org.rrhh.department.domain.document.Department;
 
-public interface DepartmentFindByCodeUseCase {
+import java.util.List;
 
-    Department getDepartmentByCode(String code);
+public interface DepartmentGetAllUseCase {
+
+    List<Department> getDepartments();
 }

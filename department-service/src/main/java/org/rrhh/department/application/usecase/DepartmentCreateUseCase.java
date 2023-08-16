@@ -2,7 +2,7 @@ package org.rrhh.department.application.usecase;
 
 import org.rrhh.department.domain.document.Department;
 
-public interface DepartmentSaveUseCase {
+public interface DepartmentCreateUseCase {
 
-    Department save(Department department);
+    Department createDepartment(Department department);
 }

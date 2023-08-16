@@ -2,5 +2,5 @@ package org.rrhh.department.application.usecase;
 
 public interface DepartmentExistsByNameUseCase {
 
-    void existsByName(String name);
+    void existsDepartmentByName(String name);
 }
