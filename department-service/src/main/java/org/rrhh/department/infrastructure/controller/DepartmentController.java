@@ -2,7 +2,9 @@ package org.rrhh.department.infrastructure.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.department.application.usecase.*;
+import org.rrhh.department.application.usecase.DepartmentCreateUseCase;
+import org.rrhh.department.application.usecase.DepartmentGetAllUseCase;
+import org.rrhh.department.application.usecase.DepartmentGetByCodeUseCase;
 import org.rrhh.department.domain.DepartmentConstants;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentRequestDTO;
@@ -19,32 +21,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DepartmentController {
 
-    private final DepartmentSaveUseCase departmentSave;
-    private final DepartmentFindByIdUseCase departmentFindById;
-    private final DepartmentFindByCodeUseCase departmentFindByCode;
-    private final DepartmentFindAllUseCase departmentFindAll;
-    private final DepartmentDeleteUseCase departmentDelete;
+    private final DepartmentCreateUseCase departmentSave;
+    private final DepartmentGetByCodeUseCase departmentFindByCode;
+    private final DepartmentGetAllUseCase departmentFindAll;
 
     private final GenericMapper<DepartmentResponseDTO, Department, DepartmentRequestDTO> departmentMapper;
 
     @PostMapping(value = "/create")
     public ResponseEntity<DepartmentResponseDTO> createDepartment(@RequestBody @Valid DepartmentRequestDTO requestDTO) {
         Department departmentDomain = departmentMapper.toDomain(requestDTO);
-        departmentDomain = departmentSave.save(departmentDomain);
+        departmentDomain = departmentSave.createDepartment(departmentDomain);
         DepartmentResponseDTO responseDTO = departmentMapper.toDTO(departmentDomain);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @GetMapping(value = "/{departmentId}")
-    public ResponseEntity<DepartmentResponseDTO> getDepartmentById(@PathVariable String departmentId) {
-        Department departmentDomain = departmentFindById.getDepartmentById(departmentId);
-        DepartmentResponseDTO responseDTO = departmentMapper.toDTO(departmentDomain);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
-    }
-
-    @GetMapping(value = "/code/{departmentCode}")
+    @GetMapping(value = "/{departmentCode}")
     public ResponseEntity<DepartmentResponseDTO> getDepartmentByCode(@PathVariable String departmentCode) {
         Department departmentDomain = departmentFindByCode.getDepartmentByCode(departmentCode);
         DepartmentResponseDTO responseDTO = departmentMapper.toDTO(departmentDomain);
@@ -60,13 +52,5 @@ public class DepartmentController {
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTOList);
-    }
-
-    @DeleteMapping(value = "/{departmentId}")
-    public ResponseEntity<Void> deleteDepartmentById(@PathVariable String departmentId) {
-        Department departmentDomain = departmentFindById.getDepartmentById(departmentId);
-        departmentDelete.deleteDepartment(departmentDomain);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

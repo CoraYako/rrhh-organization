@@ -8,7 +8,5 @@ public interface DepartmentMapper {
 
     DepartmentDocument toDocument(@NotNull Department department);
 
-    DepartmentDocument toDocumentComplete(@NotNull Department department);
-
     Department toDomain(@NotNull DepartmentDocument departmentDocument);
 }

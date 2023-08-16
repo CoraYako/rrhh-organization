@@ -19,16 +19,6 @@ public class DepartmentMapperImpl implements DepartmentMapper {
     }
 
     @Override
-    public DepartmentDocument toDocumentComplete(Department department) {
-        return DepartmentDocument.builder()
-                .id(department.getId().getValue())
-                .name(department.getName().getValue())
-                .description(department.getDescription().getValue())
-                .code(department.getCode().getValue())
-                .build();
-    }
-
-    @Override
     public Department toDomain(DepartmentDocument departmentDocument) {
         return Department.builder()
                 .id(departmentDocument.getId())

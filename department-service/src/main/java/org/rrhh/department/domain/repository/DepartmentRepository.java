@@ -9,10 +9,6 @@ public interface DepartmentRepository {
 
     Department save(Department department);
 
-    Optional<Department> findById(String id);
-
-    void delete(Department department);
-
     List<Department> findAll();
 
     boolean existsByName(String name);

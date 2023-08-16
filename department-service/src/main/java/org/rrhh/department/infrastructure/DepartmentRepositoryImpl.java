@@ -25,18 +25,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public Optional<Department> findById(String id) {
-        Optional<DepartmentDocument> optionalDepartmentDocument = departmentPersistence.findById(id);
-        return optionalDepartmentDocument.map(departmentMapper::toDomain);
-    }
-
-    @Override
-    public void delete(Department department) {
-        DepartmentDocument departmentDocument = departmentMapper.toDocumentComplete(department);
-        departmentPersistence.delete(departmentDocument);
-    }
-
-    @Override
     public List<Department> findAll() {
         return departmentPersistence.findAll()
                 .stream()
