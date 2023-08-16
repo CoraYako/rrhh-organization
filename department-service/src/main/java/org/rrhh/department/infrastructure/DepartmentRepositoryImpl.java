@@ -6,12 +6,12 @@ import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.rrhh.department.infrastructure.repository.data.DepartmentPersistence;
 import org.rrhh.department.infrastructure.repository.document.DepartmentDocument;
 import org.rrhh.department.infrastructure.repository.mapper.DepartmentMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class DepartmentRepositoryImpl implements DepartmentRepository {
 
