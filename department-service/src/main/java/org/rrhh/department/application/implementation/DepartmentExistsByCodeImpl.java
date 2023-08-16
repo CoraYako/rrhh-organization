@@ -7,18 +7,18 @@ import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DepartmentExistsByCode implements DepartmentExistsByCodeUseCase {
+public class DepartmentExistsByCodeImpl implements DepartmentExistsByCodeUseCase {
 
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentExistsByCode(DepartmentRepository departmentRepository) {
+    public DepartmentExistsByCodeImpl(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 
     @Override
-    public void existsByCode(String departmentCode) {
+    public void existsDepartmentByCode(String departmentCode) {
         if (departmentCode.trim().isEmpty())
-            throw new NullParameterException("Code");
+            throw new NullParameterException("Department code");
         if (departmentRepository.existsByCode(departmentCode))
             throw new ResourceExistException("Department", "code", departmentCode);
     }
