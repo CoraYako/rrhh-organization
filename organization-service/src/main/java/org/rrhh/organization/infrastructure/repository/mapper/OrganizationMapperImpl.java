@@ -20,17 +20,6 @@ public class OrganizationMapperImpl implements OrganizationMapper {
     }
 
     @Override
-    public OrganizationDocument toDocumentComplete(Organization domain) {
-        return OrganizationDocument.builder()
-                .id(domain.getId().getValue())
-                .name(domain.getName().getValue())
-                .description(domain.getDescription().getValue())
-                .code(domain.getCode().getValue())
-                .creationDate(domain.getCreationDate().getValue())
-                .build();
-    }
-
-    @Override
     public Organization toDomain(OrganizationDocument document) {
         return Organization.builder()
                 .id(document.getId())

@@ -4,7 +4,7 @@ import org.rrhh.organization.domain.document.Organization;
 
 import java.util.List;
 
-public interface OrganizationFindAllUseCase {
+public interface OrganizationGetAllUseCase {
 
-    List<Organization> getAllOrganizations();
+    List<Organization> getOrganizations();
 }

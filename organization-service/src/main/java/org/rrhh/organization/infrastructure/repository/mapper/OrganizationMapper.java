@@ -8,7 +8,5 @@ public interface OrganizationMapper {
 
     OrganizationDocument toDocument(@NotNull Organization domain);
 
-    OrganizationDocument toDocumentComplete(@NotNull Organization domain);
-
     Organization toDomain(@NotNull OrganizationDocument document);
 }

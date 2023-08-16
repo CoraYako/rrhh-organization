@@ -7,16 +7,16 @@ import org.rrhh.organization.domain.repository.OrganizationRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrganizationExistsByCode implements OrganizationExistsByCodeUseCase {
+public class OrganizationExistsByCodeImpl implements OrganizationExistsByCodeUseCase {
 
     private final OrganizationRepository organizationRepository;
 
-    public OrganizationExistsByCode(OrganizationRepository organizationRepository) {
+    public OrganizationExistsByCodeImpl(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 
     @Override
-    public void existsByCode(String code) {
+    public void existsOrganizationByCode(String code) {
         if (code.trim().isEmpty())
             throw new NullParameterException("Organization code");
         if (organizationRepository.existsByCode(code))

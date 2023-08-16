@@ -1,6 +1,6 @@
 package org.rrhh.organization.application.implementation;
 
-import org.rrhh.organization.application.usecase.OrganizationFindByCodeUseCase;
+import org.rrhh.organization.application.usecase.OrganizationGetByCodeUseCase;
 import org.rrhh.organization.domain.document.Organization;
 import org.rrhh.organization.domain.exception.NullParameterException;
 import org.rrhh.organization.domain.exception.ResourceNotFoundException;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class OrganizationFindByCode implements OrganizationFindByCodeUseCase {
+public class OrganizationGetByCodeImpl implements OrganizationGetByCodeUseCase {
 
     private final OrganizationRepository organizationRepository;
 
-    public OrganizationFindByCode(OrganizationRepository organizationRepository) {
+    public OrganizationGetByCodeImpl(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 

@@ -2,7 +2,7 @@ package org.rrhh.organization.application.usecase;
 
 import org.rrhh.organization.domain.document.Organization;
 
-public interface OrganizationFindByCodeUseCase {
+public interface OrganizationCreateUseCase {
 
-    Organization getOrganizationByCode(String code);
+    Organization createOrganization(Organization organization);
 }
