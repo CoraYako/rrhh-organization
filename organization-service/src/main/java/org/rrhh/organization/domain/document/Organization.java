@@ -1,7 +1,5 @@
 package org.rrhh.organization.domain.document;
 
-import java.time.LocalDateTime;
-
 public class Organization {
 
     private final OrganizationID id;
@@ -74,7 +72,7 @@ public class Organization {
             return this;
         }
 
-        public OrganizationBuilder creationDate(LocalDateTime creationDate) {
+        public OrganizationBuilder creationDate(String creationDate) {
             this.creationDate = new CreationDate(creationDate);
             return this;
         }
