@@ -3,6 +3,7 @@ package org.rrhh.organization.application.implementation;
 import org.rrhh.organization.application.usecase.OrganizationCreateUseCase;
 import org.rrhh.organization.application.usecase.OrganizationExistsByCodeUseCase;
 import org.rrhh.organization.application.usecase.OrganizationExistsByNameUseCase;
+import org.rrhh.organization.domain.OrganizationConstants;
 import org.rrhh.organization.domain.document.Organization;
 import org.rrhh.organization.domain.exception.NullParameterException;
 import org.rrhh.organization.domain.repository.OrganizationRepository;
@@ -36,11 +37,13 @@ public class OrganizationCreateImpl implements OrganizationCreateUseCase {
         organizationExistsByName.existsOrganizationByName(organizationName);
         organizationExistsByCode.existsOrganizationByCode(organizationCode);
 
+        String creationDate = OrganizationConstants.FORMATTER.format(LocalDateTime.now());
+
         Organization organizationToSave = Organization.builder()
                 .name(organizationName)
                 .description(organization.getDescription().getValue())
                 .code(organizationCode)
-                .creationDate(LocalDateTime.now())
+                .creationDate(creationDate)
                 .build();
 
         return organizationRepository.save(organizationToSave);

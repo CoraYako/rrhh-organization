@@ -1,4 +1,4 @@
-package org.rrhh.organization.infrastructure.controller.dto;
+package org.rrhh.organization.infrastructure.dto;
 
 import lombok.Builder;
 

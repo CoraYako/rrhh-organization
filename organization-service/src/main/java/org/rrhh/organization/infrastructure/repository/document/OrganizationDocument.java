@@ -6,8 +6,6 @@ import org.rrhh.organization.domain.OrganizationConstants;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @Document(collection = OrganizationConstants.COLLECTION_NAME)
 @Builder
 @Getter
@@ -18,5 +16,5 @@ public class OrganizationDocument {
     private String name;
     private String description;
     private String code;
-    private LocalDateTime creationDate;
+    private String creationDate;
 }

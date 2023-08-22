@@ -1,10 +1,10 @@
-package org.rrhh.organization.domain.document;
+package org.rrhh.employee.domain.document;
 
-public class CreationDate {
+public class EmployeeOrganizationCode {
 
     private String value;
 
-    public CreationDate(String value) {
+    public EmployeeOrganizationCode(String value) {
         this.value = value;
     }
 

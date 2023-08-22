@@ -1,10 +1,10 @@
 package org.rrhh.organization.domain.document;
 
-public class CreationDate {
+public class OrganizationID {
 
     private String value;
 
-    public CreationDate(String value) {
+    public OrganizationID(String value) {
         this.value = value;
     }
 

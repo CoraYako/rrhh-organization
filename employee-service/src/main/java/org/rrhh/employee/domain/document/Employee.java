@@ -1,6 +1,7 @@
 package org.rrhh.employee.domain.document;
 
 import org.rrhh.department.domain.document.Department;
+import org.rrhh.organization.domain.document.Organization;
 
 public class Employee {
 
@@ -9,20 +10,26 @@ public class Employee {
     private final EmployeeLastName lastName;
     private final EmployeeEmail email;
     private final EmployeeDepartmentCode departmentCode;
+    private final EmployeeOrganizationCode organizationCode;
     private final EmployeeDepartment department;
+    private final EmployeeOrganization organization;
 
     public Employee(EmployeeID id,
                     EmployeeFirstName firstName,
                     EmployeeLastName lastName,
                     EmployeeEmail email,
                     EmployeeDepartmentCode departmentCode,
-                    EmployeeDepartment department) {
+                    EmployeeOrganizationCode organizationCode,
+                    EmployeeDepartment department,
+                    EmployeeOrganization organization) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.departmentCode = departmentCode;
+        this.organizationCode = organizationCode;
         this.department = department;
+        this.organization = organization;
     }
 
     public static EmployeeBuilder builder() {
@@ -49,8 +56,16 @@ public class Employee {
         return departmentCode;
     }
 
+    public EmployeeOrganizationCode getOrganizationCode() {
+        return organizationCode;
+    }
+
     public EmployeeDepartment getDepartment() {
         return department;
+    }
+
+    public EmployeeOrganization getOrganization() {
+        return organization;
     }
 
     public static class EmployeeBuilder {
@@ -60,7 +75,9 @@ public class Employee {
         private EmployeeLastName lastName;
         private EmployeeEmail email;
         private EmployeeDepartmentCode departmentCode;
+        private EmployeeOrganizationCode organizationCode;
         private EmployeeDepartment department;
+        private EmployeeOrganization organization;
 
         public EmployeeBuilder id(String id) {
             this.id = new EmployeeID(id);
@@ -87,13 +104,30 @@ public class Employee {
             return this;
         }
 
+        public EmployeeBuilder organizationCode(String organizationCode) {
+            this.organizationCode = new EmployeeOrganizationCode(organizationCode);
+            return this;
+        }
+
         public EmployeeBuilder department(Department department) {
             this.department = new EmployeeDepartment(department);
             return this;
         }
 
+        public EmployeeBuilder organization(Organization organization) {
+            this.organization = new EmployeeOrganization(organization);
+            return this;
+        }
+
         public Employee build() {
-            return new Employee(id, firstName, lastName, email, departmentCode, department);
+            return new Employee(id,
+                    firstName,
+                    lastName,
+                    email,
+                    departmentCode,
+                    organizationCode,
+                    department,
+                    organization);
         }
     }
 }
