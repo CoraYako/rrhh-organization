@@ -2,6 +2,7 @@ package org.rrhh.employee.infrastructure.controller.dto;
 
 import lombok.Builder;
 import org.rrhh.department.infrastructure.dto.DepartmentResponseDTO;
+import org.rrhh.organization.infrastructure.dto.OrganizationResponseDTO;
 
 @Builder
 public record EmployeeCompleteResponseDTO(
@@ -10,6 +11,8 @@ public record EmployeeCompleteResponseDTO(
         String lastName,
         String email,
         String departmentCode,
-        DepartmentResponseDTO associatedDepartment
+        String organizationCode,
+        DepartmentResponseDTO associatedDepartment,
+        OrganizationResponseDTO associatedOrganization
 ) {
 }
