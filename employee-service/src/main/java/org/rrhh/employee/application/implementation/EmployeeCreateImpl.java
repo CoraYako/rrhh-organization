@@ -43,7 +43,6 @@ public class EmployeeCreateImpl implements EmployeeCreateUseCase {
         String departmentCode = employee.getDepartmentCode().getValue();
         Department department = departmentGetByCode.getDepartmentByCode(departmentCode);
 
-        // TODO: 18/8/2023 find why organization it's from fallback method
         String organizationCode = employee.getOrganizationCode().getValue();
         Organization organization = organizationGetByCode.getOrganizationByCode(organizationCode);
 
