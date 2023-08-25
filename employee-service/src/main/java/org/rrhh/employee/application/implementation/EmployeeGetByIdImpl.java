@@ -7,6 +7,8 @@ import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.domain.exception.NullParameterException;
 import org.rrhh.employee.domain.exception.ResourceNotFoundException;
 import org.rrhh.employee.domain.repository.EmployeeRepository;
+import org.rrhh.organization.application.usecase.OrganizationGetByCodeUseCase;
+import org.rrhh.organization.domain.document.Organization;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,12 +17,15 @@ import java.util.Optional;
 public class EmployeeGetByIdImpl implements EmployeeGetByIdUseCase {
 
     private final EmployeeRepository employeeRepository;
-
     private final DepartmentGetByCodeUseCase departmentFindByCode;
+    private final OrganizationGetByCodeUseCase organizationGetByCode;
 
-    public EmployeeGetByIdImpl(EmployeeRepository employeeRepository, DepartmentGetByCodeUseCase departmentFindByCode) {
+    public EmployeeGetByIdImpl(EmployeeRepository employeeRepository,
+                               DepartmentGetByCodeUseCase departmentFindByCode,
+                               OrganizationGetByCodeUseCase organizationGetByCode) {
         this.employeeRepository = employeeRepository;
         this.departmentFindByCode = departmentFindByCode;
+        this.organizationGetByCode = organizationGetByCode;
     }
 
     @Override
@@ -32,15 +37,22 @@ public class EmployeeGetByIdImpl implements EmployeeGetByIdUseCase {
         if (optionalEmployee.isEmpty())
             throw new ResourceNotFoundException("Employee", "ID", employeeId);
 
-        String departmentCode = optionalEmployee.get().getDepartmentCode().getValue();
-        Department department = departmentFindByCode.getDepartmentByCode(departmentCode);
         Employee employeeFound = optionalEmployee.get();
+
+        String departmentCode = employeeFound.getDepartmentCode().getValue();
+        Department department = departmentFindByCode.getDepartmentByCode(departmentCode);
+
+        String organizationCode = employeeFound.getOrganizationCode().getValue();
+        Organization organization = organizationGetByCode.getOrganizationByCode(organizationCode);
+
         employeeFound = Employee.builder()
                 .id(employeeFound.getId().getValue())
                 .firstName(employeeFound.getFirstName().getValue())
                 .lastName(employeeFound.getLastName().getValue())
                 .email(employeeFound.getEmail().getValue())
-                .departmentCode(employeeFound.getDepartmentCode().getValue())
+                .departmentCode(departmentCode)
+                .organizationCode(organizationCode)
+                .organization(organization)
                 .department(department)
                 .build();
 
