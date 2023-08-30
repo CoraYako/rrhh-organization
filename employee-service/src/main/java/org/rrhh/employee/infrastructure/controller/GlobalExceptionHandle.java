@@ -1,5 +1,9 @@
 package org.rrhh.employee.infrastructure.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import feign.FeignException;
 import org.rrhh.employee.domain.exception.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -93,5 +98,22 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler {
                 .errorCode(HttpStatus.NO_CONTENT.toString())
                 .build();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorDetails);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<Object> handleDepartmentService(FeignException ex, WebRequest request) {
+        HttpStatus httpStatus = HttpStatus.resolve(ex.status());
+        String jsonBody = ex.contentUTF8();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        try {
+            ErrorDetails errorDetails = mapper.readValue(jsonBody, ErrorDetails.class);
+            return ResponseEntity.status(httpStatus).body(errorDetails);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

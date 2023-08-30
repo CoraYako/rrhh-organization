@@ -2,7 +2,6 @@ package org.rrhh.department.application.implementation;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.rrhh.department.application.usecase.DepartmentGetByCodeUseCase;
-import org.rrhh.department.domain.DepartmentConstants;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.slf4j.Logger;
@@ -19,15 +18,25 @@ public class DepartmentGetByCodeImpl implements DepartmentGetByCodeUseCase {
         this.departmentRepository = departmentRepository;
     }
 
+    /*
+    To use the Retry pattern, uncomment the @Retry that allows to call the external microservice
+    a certain numbers of times before it ends up in the fallback method.
+
+    @Retry(name = "${spring.application.name}", fallbackMethod = DepartmentConstants.METHOD_NAME)
+    */
     @Override
-    //@Retry(name = "${spring.application.name}", fallbackMethod = DepartmentConstants.METHOD_NAME)
-    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = DepartmentConstants.METHOD_NAME)
+    @CircuitBreaker(name = "${spring.application.name}")
     public Department getDepartmentByCode(String code) {
         LOGGER.info("#####----- inside getDepartmentByCode() method -----#####");
 
         return departmentRepository.findByCode(code);
     }
 
+    /*
+    To use the below method, add the following code inside the parentheses of @CircuitBreaker or @Retry annotation.
+    Use a comma to separate from other specifications:
+    fallbackMethod = DepartmentConstants.METHOD_NAME
+    */
     public Department getDefaultDepartment(String code, Exception exception) {
         LOGGER.error("#####----- inside getDefaultDepartment() method -----#####");
         LOGGER.error(exception.getLocalizedMessage());
