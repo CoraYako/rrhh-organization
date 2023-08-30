@@ -2,7 +2,6 @@ package org.rrhh.organization.application.implementation;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.rrhh.organization.application.usecase.OrganizationGetByCodeUseCase;
-import org.rrhh.organization.domain.OrganizationConstants;
 import org.rrhh.organization.domain.document.Organization;
 import org.rrhh.organization.domain.repository.OrganizationRepository;
 import org.slf4j.Logger;
@@ -22,15 +21,25 @@ public class OrganizationGetByCodeImpl implements OrganizationGetByCodeUseCase {
         this.organizationRepository = organizationRepository;
     }
 
+    /*
+    To use the Retry pattern, uncomment the @Retry that allows to call the external microservice
+    a certain numbers of times before it ends up in the fallback method.
+
+    @Retry(name = "${spring.application.name}", fallbackMethod = OrganizationConstants.METHOD_NAME)
+    */
     @Override
-//    @Retry(name = "${spring.application.name}", fallbackMethod = OrganizationConstants.METHOD_NAME)
-    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = OrganizationConstants.METHOD_NAME)
+    @CircuitBreaker(name = "${spring.application.name}")
     public Organization getOrganizationByCode(String code) {
         LOGGER.info("#####----- inside getOrganizationByCode() method -----#####");
 
         return organizationRepository.findByCode(code);
     }
 
+    /*
+    To use the below method, add the following code inside the parentheses of @CircuitBreaker or @Retry annotation.
+    Use a comma to separate from other specifications:
+    fallbackMethod = DepartmentConstants.METHOD_NAME
+    */
     public Organization getDefaultOrganization(String code, Exception exception) {
         LOGGER.error("#####----- inside getDefaultOrganization() method -----#####");
         LOGGER.error(exception.getLocalizedMessage());
