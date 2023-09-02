@@ -30,7 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         ),
         servers = @Server(
                 description = "Base URL for local instance",
-                url = "http://localhost:9092"
+                url = "http://localhost:9191"
         )
 )
 @SpringBootApplication
