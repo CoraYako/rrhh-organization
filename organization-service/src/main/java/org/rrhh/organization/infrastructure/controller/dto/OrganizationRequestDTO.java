@@ -8,7 +8,7 @@ import lombok.Builder;
 @Schema(description = "DTO model used as request to register an organization, all the information is required")
 @Builder
 public record OrganizationRequestDTO(
-        @Schema(description = "Organization ID", example = "64e7f827a64c725ba9cab945")
+        @Schema(description = "Organization ID", example = "Salesforce")
         @NotEmpty @NotBlank String name,
         @Schema(description = "Organization Full Description", example = "Helps businesses keep track of " +
                 "customer interactions and sales data")

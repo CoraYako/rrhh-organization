@@ -53,7 +53,7 @@ public class EmployeeController {
                             responseCode = "201",
                             description = "Employee created",
                             content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EmployeeBasicResponseDTO.class))}
+                            schema = @Schema(implementation = EmployeeCompleteResponseDTO.class))}
                     ),
                     @ApiResponse(
                             responseCode = "400",
