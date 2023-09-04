@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -45,7 +46,7 @@ public class EmployeeController {
 
     @Operation(
             summary = "Employee Creation And Registration",
-            description = "Creates an employee in the database"
+            description = "Creates an employee in the database."
     )
     @ApiResponses(
             value = {
@@ -56,9 +57,76 @@ public class EmployeeController {
                             schema = @Schema(implementation = EmployeeCompleteResponseDTO.class))}
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Invalid or missing body content",
+                            responseCode = "404",
+                            description = """
+                                    A 404 Not Found can occur due to:
+                                    - Department not found
+                                    - Organization not found
+                                    
+                                    Use the dropdown button to switch between the different examples.""",
                             content = {@Content(mediaType = "application/json",
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Department Not Found",
+                                            value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
+                                                    + "\"message\": \"Department not found with code : 'AAA001'\","
+                                                    + "\"path\": \"uri=/api/v1/departments/AAA001\","
+                                                    + "\"errorCode\": \"RESOURCE_NOT_FOUND\""
+                                                    + "}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Organization Not Found",
+                                            value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
+                                                    + "\"message\": \"Organization not found with code : 'BBB002'\","
+                                                    + "\"path\": \"uri=/api/v1/organizations/BBB002\","
+                                                    + "\"errorCode\": \"RESOURCE_NOT_FOUND\""
+                                                    + "}"
+                                    )
+                            },
+                            schema = @Schema(implementation = ErrorDetails.class))}
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = """
+                                    A 400 Bad Request can occur due to:
+                                    - The required request body (payload) is missing
+                                    - Email is already registered in the database
+                                    - Null or empty body attribute
+                                    Use the dropdown button to switch between the different examples.""",
+                            content = {@Content(mediaType = "application/json",
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Payload Body Missing",
+                                            description = "It occurs when tries to create a resource " +
+                                                    "without the body (payload).",
+                                            value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
+                                                    + "\"message\": \"Required request body is missing\","
+                                                    + "\"path\": \"uri=/api/v1/employees\","
+                                                    + "\"errorCode\": \"INVALID_REQUIRED_PAYLOAD\""
+                                                    + "}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Email Error",
+                                            description = "When the email is already registered in the database.",
+                                            value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
+                                                    + "\"message\": \"Employee already exist with email : 'test@email.com'\","
+                                                    + "\"path\": \"uri=/api/v1/employees\","
+                                                    + "\"errorCode\": \"DUPLICATED_RESOURCE\""
+                                                    + "}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Body Attribute Error",
+                                            description = "If all body attributes are missing, " +
+                                                    "it will be displayed as the example. " +
+                                                    "Otherwise, only the missing attribute will be displayed.",
+                                            value = "{\"firstName\": \"should not be empty\","
+                                                    + "\"lastName\": \"should not be empty\","
+                                                    + "\"organizationCode\": \"should not be empty\","
+                                                    + "\"departmentCode\": \"should not be empty\","
+                                                    +"\"email\": \"should not be empty\""
+                                                    + "}"
+                                    )
+                            },
                             schema = @Schema(implementation = ErrorDetails.class))}
                     )
             }
@@ -89,12 +157,13 @@ public class EmployeeController {
                             responseCode = "404",
                             description = "Employee not found",
                             content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))}
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Invalid ID supplied",
-                            content = {@Content(mediaType = "application/json",
+                            examples = {@ExampleObject(
+                                    value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
+                                            + "\"message\": \"Employee not found with ID : '64ee5bd81d1dd84246498d44'\","
+                                            + "\"path\": \"uri=/api/v1/employees/64ee5bd81d1dd84246498d44\","
+                                            + "\"errorCode\": \"RESOURCE_NOT_FOUND\""
+                                            + "}"
+                            )},
                             schema = @Schema(implementation = ErrorDetails.class))}
                     )
             }
@@ -120,16 +189,11 @@ public class EmployeeController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "List all employees",
+                            description = "List all employees.If there is no employees, " +
+                                    "an empty list is returned.",
                             content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(
                             schema = @Schema(implementation = EmployeeBasicResponseDTO.class)))}
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "No employees found",
-                            content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDetails.class))}
                     )
             }
     )
@@ -157,6 +221,13 @@ public class EmployeeController {
                             responseCode = "404",
                             description = "Employee not found",
                             content = {@Content(mediaType = "application/json",
+                            examples = {@ExampleObject(
+                                    value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
+                                            + "\"message\": \"Employee not found with ID : '64ee5bd81d1dd84246498d44'\","
+                                            + "\"path\": \"uri=/api/v1/employees/64ee5bd81d1dd84246498d44\","
+                                            + "\"errorCode\": \"RESOURCE_NOT_FOUND\""
+                                            + "}"
+                            )},
                             schema = @Schema(implementation = ErrorDetails.class))}
                     )
             }
