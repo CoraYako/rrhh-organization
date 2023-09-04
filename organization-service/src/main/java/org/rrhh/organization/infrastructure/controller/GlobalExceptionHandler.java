@@ -46,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .message(ex.getMessage())
                 .path(request.getDescription(false))
-                .errorCode(status.toString())
+                .errorCode("INVALID_REQUIRED_PAYLOAD")
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
