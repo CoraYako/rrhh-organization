@@ -23,10 +23,8 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatusCode status,
-                                                                  WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
         List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
         errorList.forEach(error -> {
@@ -38,15 +36,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatusCode status,
-                                                                  WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.builder()
                 .timestamp(LocalDateTime.now())
                 .message(ex.getMessage())
                 .path(request.getDescription(false))
-                .errorCode("INVALID_REQUIRED_PAYLOAD")
+                .errorCode(HttpCodeResponse.INVALID_REQUIRED_PAYLOAD)
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
@@ -57,7 +53,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .message(ex.getMessage())
                 .path(request.getDescription(false))
-                .errorCode("RESOURCE_NOT_FOUND")
+                .errorCode(HttpCodeResponse.RESOURCE_NOT_FOUND)
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
     }
@@ -68,7 +64,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .message(ex.getMessage())
                 .path(request.getDescription(false))
-                .errorCode("DUPLICATED_RESOURCE")
+                .errorCode(HttpCodeResponse.DUPLICATED_RESOURCE)
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
@@ -79,19 +75,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .message(ex.getMessage())
                 .path(request.getDescription(false))
-                .errorCode("INVALID_DEPARTMENT")
+                .errorCode(HttpCodeResponse.INVALID_ARGUMENT)
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
-    }
-
-    @ExceptionHandler(EmptyListException.class)
-    public ResponseEntity<Object> handleEmptyList(EmptyListException ex, WebRequest request) {
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(LocalDateTime.now())
-                .message(ex.getMessage())
-                .path(request.getDescription(false))
-                .errorCode(HttpStatus.NO_CONTENT.toString())
-                .build();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorDetails);
     }
 }

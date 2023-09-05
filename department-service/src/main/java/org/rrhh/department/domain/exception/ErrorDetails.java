@@ -2,7 +2,7 @@ package org.rrhh.department.domain.exception;
 
 import java.time.LocalDateTime;
 
-public record ErrorDetails(LocalDateTime timestamp, String message, String path, String errorCode) {
+public record ErrorDetails(LocalDateTime timestamp, String message, String path, HttpCodeResponse errorCode) {
 
     public static ErrorDetailsBuilder builder() {
         return new ErrorDetailsBuilder();
@@ -13,7 +13,7 @@ public record ErrorDetails(LocalDateTime timestamp, String message, String path,
         private LocalDateTime timestamp;
         private String message;
         private String path;
-        private String errorCode;
+        private HttpCodeResponse errorCode;
 
         public ErrorDetailsBuilder timestamp(LocalDateTime timestamp) {
             this.timestamp = timestamp;
@@ -30,7 +30,7 @@ public record ErrorDetails(LocalDateTime timestamp, String message, String path,
             return this;
         }
 
-        public ErrorDetailsBuilder errorCode(String errorCode) {
+        public ErrorDetailsBuilder errorCode(HttpCodeResponse errorCode) {
             this.errorCode = errorCode;
             return this;
         }
