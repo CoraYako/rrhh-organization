@@ -2,7 +2,6 @@ package org.rrhh.department.infrastructure.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,12 +10,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.department.application.usecase.DepartmentCreateUseCase;
-import org.rrhh.department.application.usecase.DepartmentGetAllUseCase;
-import org.rrhh.department.application.usecase.DepartmentGetByCodeUseCase;
 import org.rrhh.department.domain.DepartmentConstants;
 import org.rrhh.department.domain.document.Department;
 import org.rrhh.department.domain.exception.ErrorDetails;
+import org.rrhh.department.domain.usecase.DepartmentCreateUseCase;
+import org.rrhh.department.domain.usecase.DepartmentGetAllUseCase;
+import org.rrhh.department.domain.usecase.DepartmentGetByCodeUseCase;
+import org.rrhh.department.infrastructure.controller.dto.DepartmentListDTO;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentRequestDTO;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentResponseDTO;
 import org.rrhh.department.infrastructure.controller.mapper.GenericMapper;
@@ -156,20 +156,22 @@ public class DepartmentController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "List all departments.If there is no departments, " +
+                            description = "List all departments. If there is no departments, " +
                                     "an empty list is returned.",
                             content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(
-                            schema = @Schema(implementation = DepartmentResponseDTO.class)))}
+                            schema = @Schema(implementation = DepartmentListDTO.class))}
                     )
             }
     )
     @GetMapping("/")
-    public ResponseEntity<List<DepartmentResponseDTO>> listDepartments() {
-        List<DepartmentResponseDTO> responseDTOList = departmentFindAll.getDepartments()
+    public ResponseEntity<DepartmentListDTO> listDepartments() {
+        List<DepartmentResponseDTO> dtoList = departmentFindAll.getDepartments()
                 .stream()
                 .map(departmentMapper::toDTO)
                 .toList();
+        DepartmentListDTO responseDTOList = DepartmentListDTO.builder()
+                .departments(dtoList)
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTOList);
     }

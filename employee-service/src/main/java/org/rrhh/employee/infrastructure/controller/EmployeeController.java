@@ -2,7 +2,6 @@ package org.rrhh.employee.infrastructure.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,15 +10,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.employee.application.usecase.EmployeeCreateUseCase;
-import org.rrhh.employee.application.usecase.EmployeeDeleteUseCase;
-import org.rrhh.employee.application.usecase.EmployeeGetAllUseCase;
-import org.rrhh.employee.application.usecase.EmployeeGetByIdUseCase;
 import org.rrhh.employee.domain.EmployeeConstants;
 import org.rrhh.employee.domain.document.Employee;
 import org.rrhh.employee.domain.exception.ErrorDetails;
+import org.rrhh.employee.domain.usecase.EmployeeCreateUseCase;
+import org.rrhh.employee.domain.usecase.EmployeeDeleteUseCase;
+import org.rrhh.employee.domain.usecase.EmployeeGetAllUseCase;
+import org.rrhh.employee.domain.usecase.EmployeeGetByIdUseCase;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeBasicResponseDTO;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeCompleteResponseDTO;
+import org.rrhh.employee.infrastructure.controller.dto.EmployeeListDTO;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDTO;
 import org.rrhh.employee.infrastructure.controller.mapper.GenericMapper;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,8 @@ public class EmployeeController {
     private final EmployeeGetAllUseCase employeeGetAll;
     private final EmployeeDeleteUseCase employeeDelete;
 
-    private final GenericMapper<EmployeeCompleteResponseDTO, EmployeeBasicResponseDTO, Employee, EmployeeRequestDTO> employeeMapper;
+    private final GenericMapper<EmployeeCompleteResponseDTO, EmployeeBasicResponseDTO, Employee, EmployeeRequestDTO>
+            employeeMapper;
 
     @Operation(
             summary = "Employee Creation And Registration",
@@ -92,6 +93,7 @@ public class EmployeeController {
                                     - The required request body (payload) is missing
                                     - Email is already registered in the database
                                     - Null or empty body attribute
+                                    
                                     Use the dropdown button to switch between the different examples.""",
                             content = {@Content(mediaType = "application/json",
                             examples = {
@@ -192,17 +194,19 @@ public class EmployeeController {
                             description = "List all employees.If there is no employees, " +
                                     "an empty list is returned.",
                             content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(
-                            schema = @Schema(implementation = EmployeeBasicResponseDTO.class)))}
+                            schema = @Schema(implementation = EmployeeListDTO.class))}
                     )
             }
     )
     @GetMapping("/")
-    public ResponseEntity<List<EmployeeBasicResponseDTO>> listEmployees() {
-        List<EmployeeBasicResponseDTO> responseDtoList = employeeGetAll.getEmployees()
+    public ResponseEntity<EmployeeListDTO> listEmployees() {
+        List<EmployeeBasicResponseDTO> dtoList = employeeGetAll.getEmployees()
                 .stream()
                 .map(employeeMapper::toDTO)
                 .toList();
+        EmployeeListDTO responseDtoList = EmployeeListDTO.builder()
+                .employees(dtoList)
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
     }

@@ -2,7 +2,6 @@ package org.rrhh.organization.infrastructure.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,12 +10,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.rrhh.organization.application.usecase.OrganizationCreateUseCase;
-import org.rrhh.organization.application.usecase.OrganizationGetAllUseCase;
-import org.rrhh.organization.application.usecase.OrganizationGetByCodeUseCase;
 import org.rrhh.organization.domain.OrganizationConstants;
 import org.rrhh.organization.domain.document.Organization;
 import org.rrhh.organization.domain.exception.ErrorDetails;
+import org.rrhh.organization.domain.usecase.OrganizationCreateUseCase;
+import org.rrhh.organization.domain.usecase.OrganizationGetAllUseCase;
+import org.rrhh.organization.domain.usecase.OrganizationGetByCodeUseCase;
+import org.rrhh.organization.infrastructure.controller.dto.OrganizationListDTO;
 import org.rrhh.organization.infrastructure.controller.dto.OrganizationRequestDTO;
 import org.rrhh.organization.infrastructure.controller.dto.OrganizationResponseDTO;
 import org.rrhh.organization.infrastructure.controller.mapper.GenericMapper;
@@ -159,17 +159,19 @@ public class OrganizationController {
                             description = "List all organizations.If there is no organizations, " +
                                     "an empty list is returned.",
                             content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(
-                            schema = @Schema(implementation = OrganizationResponseDTO.class)))}
+                            schema = @Schema(implementation = OrganizationListDTO.class))}
                     )
             }
     )
     @GetMapping("/")
-    public ResponseEntity<List<OrganizationResponseDTO>> listOrganizations() {
-        List<OrganizationResponseDTO> responseDTOList = organizationGetAll.getOrganizations()
+    public ResponseEntity<OrganizationListDTO> listOrganizations() {
+        List<OrganizationResponseDTO> dtoList = organizationGetAll.getOrganizations()
                 .stream()
                 .map(organizationMapper::toDTO)
                 .toList();
+        OrganizationListDTO responseDTOList = OrganizationListDTO.builder()
+                .organizations(dtoList)
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDTOList);
     }
