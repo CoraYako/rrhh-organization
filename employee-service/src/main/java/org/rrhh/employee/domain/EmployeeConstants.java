@@ -17,4 +17,9 @@ public class EmployeeConstants {
             "PATCH",
             "DELETE"
     };
+    public static final String[] ALLOWED_HEADERS = {
+            "Origin",
+            "Content-Type",
+            "Accept"
+    };
 }

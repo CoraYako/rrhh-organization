@@ -19,5 +19,10 @@ public class OrganizationConstants {
             "PATCH",
             "DELETE"
     };
+    public static final String[] ALLOWED_HEADERS = {
+            "Origin",
+            "Content-Type",
+            "Accept"
+    };
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 }
