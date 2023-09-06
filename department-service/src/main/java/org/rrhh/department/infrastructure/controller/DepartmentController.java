@@ -21,6 +21,7 @@ import org.rrhh.department.infrastructure.controller.dto.DepartmentRequestDTO;
 import org.rrhh.department.infrastructure.controller.dto.DepartmentResponseDTO;
 import org.rrhh.department.infrastructure.controller.mapper.GenericMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class DepartmentController {
                     @ApiResponse(
                             responseCode = "201",
                             description = "Department created",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = DepartmentResponseDTO.class))}
                     ),
                     @ApiResponse(
@@ -62,7 +63,7 @@ public class DepartmentController {
                                     - Null or empty body attribute
                                     
                                     Use the dropdown button to switch between the different examples.""",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {
                                     @ExampleObject(
                                             name = "Payload Body Missing",
@@ -117,13 +118,13 @@ public class DepartmentController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Found the department",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = DepartmentResponseDTO.class))}
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Department not found",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {@ExampleObject(
                                     value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
                                             + "\"message\": \"Department not found with code : 'AAA001'\","
@@ -158,7 +159,7 @@ public class DepartmentController {
                             responseCode = "200",
                             description = "List all departments. If there is no departments, " +
                                     "an empty list is returned.",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = DepartmentListDTO.class))}
                     )
             }
