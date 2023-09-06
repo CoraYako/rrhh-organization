@@ -6,12 +6,12 @@ import org.rrhh.department.domain.repository.DepartmentRepository;
 import org.rrhh.department.infrastructure.repository.data.DepartmentPersistence;
 import org.rrhh.department.infrastructure.repository.document.DepartmentDocument;
 import org.rrhh.department.infrastructure.repository.mapper.DepartmentMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class DepartmentRepositoryImpl implements DepartmentRepository {
 
@@ -25,18 +25,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public Optional<Department> findById(String id) {
-        Optional<DepartmentDocument> optionalDepartmentDocument = departmentPersistence.findById(id);
-        return optionalDepartmentDocument.map(departmentMapper::toDomain);
-    }
-
-    @Override
-    public void delete(Department department) {
-        DepartmentDocument departmentDocument = departmentMapper.toDocumentComplete(department);
-        departmentPersistence.delete(departmentDocument);
-    }
-
-    @Override
     public List<Department> findAll() {
         return departmentPersistence.findAll()
                 .stream()
@@ -47,5 +35,16 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     @Override
     public boolean existsByName(String name) {
         return departmentPersistence.existsByName(name);
+    }
+
+    @Override
+    public Optional<Department> findByCode(String code) {
+        Optional<DepartmentDocument> optionalDepartmentDocument = departmentPersistence.findByCode(code);
+        return optionalDepartmentDocument.map(departmentMapper::toDomain);
+    }
+
+    @Override
+    public boolean existsByCode(String code) {
+        return departmentPersistence.existsByCode(code);
     }
 }
