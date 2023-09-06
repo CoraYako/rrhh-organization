@@ -21,6 +21,7 @@ import org.rrhh.organization.infrastructure.controller.dto.OrganizationRequestDT
 import org.rrhh.organization.infrastructure.controller.dto.OrganizationResponseDTO;
 import org.rrhh.organization.infrastructure.controller.mapper.GenericMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class OrganizationController {
                     @ApiResponse(
                             responseCode = "201",
                             description = "Organization created",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = OrganizationResponseDTO.class))}
                     ),
                     @ApiResponse(
@@ -62,7 +63,7 @@ public class OrganizationController {
                                     - Null or empty body attribute
                                     
                                     Use the dropdown button to switch between the different examples.""",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {
                                     @ExampleObject(
                                             name = "Payload Body Missing",
@@ -117,13 +118,13 @@ public class OrganizationController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Found the organization",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = OrganizationResponseDTO.class))}
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Organization not found",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {@ExampleObject(
                                     value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
                                             + "\"message\": \"Organization not found with code : 'BBB002'\","
@@ -158,7 +159,7 @@ public class OrganizationController {
                             responseCode = "200",
                             description = "List all organizations.If there is no organizations, " +
                                     "an empty list is returned.",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = OrganizationListDTO.class))}
                     )
             }

@@ -23,6 +23,7 @@ import org.rrhh.employee.infrastructure.controller.dto.EmployeeListDTO;
 import org.rrhh.employee.infrastructure.controller.dto.EmployeeRequestDTO;
 import org.rrhh.employee.infrastructure.controller.mapper.GenericMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +55,7 @@ public class EmployeeController {
                     @ApiResponse(
                             responseCode = "201",
                             description = "Employee created",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = EmployeeCompleteResponseDTO.class))}
                     ),
                     @ApiResponse(
@@ -65,7 +66,7 @@ public class EmployeeController {
                                     - Organization not found
                                     
                                     Use the dropdown button to switch between the different examples.""",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {
                                     @ExampleObject(
                                             name = "Department Not Found",
@@ -95,7 +96,7 @@ public class EmployeeController {
                                     - Null or empty body attribute
                                     
                                     Use the dropdown button to switch between the different examples.""",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {
                                     @ExampleObject(
                                             name = "Payload Body Missing",
@@ -152,13 +153,13 @@ public class EmployeeController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Found the employee",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = EmployeeCompleteResponseDTO.class))}
                     ),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Employee not found",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {@ExampleObject(
                                     value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
                                             + "\"message\": \"Employee not found with ID : '64ee5bd81d1dd84246498d44'\","
@@ -193,7 +194,7 @@ public class EmployeeController {
                             responseCode = "200",
                             description = "List all employees.If there is no employees, " +
                                     "an empty list is returned.",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = EmployeeListDTO.class))}
                     )
             }
@@ -224,7 +225,7 @@ public class EmployeeController {
                     @ApiResponse(
                             responseCode = "404",
                             description = "Employee not found",
-                            content = {@Content(mediaType = "application/json",
+                            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             examples = {@ExampleObject(
                                     value = "{\"timestamp\": \"2023-09-03T10:58:51.3207771\","
                                             + "\"message\": \"Employee not found with ID : '64ee5bd81d1dd84246498d44'\","
