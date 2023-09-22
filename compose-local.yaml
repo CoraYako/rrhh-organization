@@ -1,0 +1,231 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - db-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    expose:
+      - 8081
+    depends_on:
+      mongodb:
+        condition: service_started
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+    links:
+      - mongodb
+    networks:
+      - db-network
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+    networks:
+      - microservices-network
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    expose:
+      - 9411
+    networks:
+      - microservices-network
+
+  service-registry:
+    build:
+      context: ./service-registry
+    container_name: service-registry
+    ports:
+      - 8761:8761
+    expose:
+      - 8761
+    networks:
+      - microservices-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - 8888:8888
+    expose:
+      - 8888
+    links:
+      - service-registry
+      - rabbitmq
+    networks:
+      - microservices-network
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8888/actuator/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - 9191:9191
+    expose:
+      - 9191
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    links:
+      - service-registry
+      - config-server
+      - rabbitmq
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      zipkin-server:
+        condition: service_started
+    networks:
+      - microservices-network
+
+  department-service:
+    build:
+      context: ./department-service
+    container_name: department-service
+    ports:
+      - 9091:9091
+    expose:
+      - 9091
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    links:
+      - mongodb
+      - config-server
+      - service-registry
+      - api-gateway
+      - rabbitmq
+      - zipkin-server
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      service-registry:
+        condition: service_healthy
+      api-gateway:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      zipkin-server:
+        condition: service_started
+    networks:
+      - db-network
+      - microservices-network
+
+  organization-service:
+    build:
+      context: ./organization-service
+    container_name: organization-service
+    ports:
+      - 9092:9092
+    expose:
+      - 9092
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    links:
+      - config-server
+      - mongodb
+      - service-registry
+      - api-gateway
+      - rabbitmq
+      - zipkin-server
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      service-registry:
+        condition: service_healthy
+      api-gateway:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      zipkin-server:
+        condition: service_started
+    networks:
+      - db-network
+      - microservices-network
+
+  employee-service:
+    build:
+      context: ./employee-service
+    container_name: employee-service
+    pull_policy: always
+    ports:
+      - 9090:9090
+    expose:
+      - 9090
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    links:
+      - config-server
+      - mongodb
+      - service-registry
+      - api-gateway
+      - rabbitmq
+      - zipkin-server
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      service-registry:
+        condition: service_healthy
+      api-gateway:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      zipkin-server:
+        condition: service_started
+      department-service:
+        condition: service_started
+      organization-service:
+        condition: service_started
+    networks:
+      - db-network
+      - microservices-network
+
+volumes:
+  mongodb-data:
+
+networks:
+  db-network:
+    driver: bridge
+  microservices-network:
+    driver: bridge
