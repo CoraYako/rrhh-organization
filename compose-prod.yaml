@@ -47,8 +47,6 @@ services:
       - microservices-network
 
   service-registry:
-    build:
-      context: ./service-registry
     image: corayako/service-registry:v1.0
     container_name: service-registry
     ports:
@@ -64,8 +62,6 @@ services:
       retries: 3
 
   config-server:
-    build:
-      context: ./config-server
     image: corayako/config-server:v1.0
     container_name: config-server
     environment:
@@ -91,8 +87,6 @@ services:
       retries: 3
 
   api-gateway:
-    build:
-      context: ./api-gateway
     image: corayako/api-gateway:v1.0
     container_name: api-gateway
     ports:
@@ -118,8 +112,6 @@ services:
       - microservices-network
 
   department-service:
-    build:
-      context: ./department-service
     image: corayako/department-service:v1.0
     container_name: department-service
     ports:
@@ -153,8 +145,6 @@ services:
       - microservices-network
 
   organization-service:
-    build:
-      context: ./organization-service
     image: corayako/organization-service:v1.0
     container_name: organization-service
     ports:
@@ -188,8 +178,6 @@ services:
       - microservices-network
 
   employee-service:
-    build:
-      context: ./employee-service
     image: corayako/employee-service:v1.0
     container_name: employee-service
     pull_policy: always

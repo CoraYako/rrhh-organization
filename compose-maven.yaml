@@ -1,0 +1,50 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - db-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    expose:
+      - 8081
+    depends_on:
+      mongodb:
+        condition: service_started
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+    links:
+      - mongodb
+    networks:
+      - db-network
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    expose:
+      - 9411
+
+volumes:
+  mongodb-data:
+
+networks:
+  db-network:
+    driver: bridge
